@@ -4,6 +4,7 @@ import com.example.onlineresumecreator.model.Course;
 import com.example.onlineresumecreator.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -42,7 +43,8 @@ public class CourseService implements ServiceInterface<Course> {
         return this.courseRepository.save(course);
     }
 
+    @Transactional
     public void deleteCourse(Long id) {
-        this.courseRepository.deleteById(id);
+        this.userService.getCurrentUser().getCourses().remove(this.courseRepository.getById(id));
     }
 }

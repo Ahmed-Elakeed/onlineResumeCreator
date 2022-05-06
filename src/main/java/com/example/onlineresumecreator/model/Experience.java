@@ -1,5 +1,7 @@
 package com.example.onlineresumecreator.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -16,6 +18,7 @@ public class Experience {
 
     @ManyToOne
     @JoinColumn(name = "userId")
+    @JsonIgnore
     private User user;
 
     public Experience() {

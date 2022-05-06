@@ -1,5 +1,7 @@
 package com.example.onlineresumecreator.service;
 
+import com.example.onlineresumecreator.exception.NoRecordWithThisIdException;
+import com.example.onlineresumecreator.exception.SimilarDataAlreadyExistsException;
 import com.example.onlineresumecreator.model.User;
 import com.example.onlineresumecreator.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +35,15 @@ public class UserService implements ServiceInterface<User>, UserDetailsService {
 
     @Override
     public User getById(Long id) {
-        return this.userRepository.findById(id).orElse(null);
+        return this.userRepository.findById(id).orElseThrow(()->new NoRecordWithThisIdException("Not Such Id"));
     }
 
     @Override
     public User save(User user) {
+        if(this.userRepository.findUserByUserEmail(user.getUserEmail())!=null || this.findUserByUserPhone(user.getUserPhone())!=null){
+            throw new SimilarDataAlreadyExistsException("Email or Phone already Exist");
+        }
+        user.setUserPassword(this.passwordEncoder.encode(user.getUserPassword()));
         return this.userRepository.save(user);
     }
 

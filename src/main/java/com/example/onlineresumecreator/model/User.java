@@ -1,5 +1,7 @@
 package com.example.onlineresumecreator.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -19,6 +21,7 @@ public class User {
     private String userCity;
     @Column(unique = true)
     private String userEmail;
+
     private String userPassword;
 
 
@@ -26,7 +29,7 @@ public class User {
     private String userAbout;
 
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.PERSIST,orphanRemoval = true)
     private Set<Course> courses;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
