@@ -35,12 +35,12 @@ public class UserService implements ServiceInterface<User>, UserDetailsService {
 
     @Override
     public User getById(Long id) {
-        return this.userRepository.findById(id).orElseThrow(()->new NoRecordWithThisIdException("Not Such Id"));
+        return this.userRepository.findById(id).orElseThrow(() -> new NoRecordWithThisIdException("Not Such Id"));
     }
 
     @Override
     public User save(User user) {
-        if(this.userRepository.findUserByUserEmail(user.getUserEmail())!=null || this.findUserByUserPhone(user.getUserPhone())!=null){
+        if (this.userRepository.findUserByUserEmail(user.getUserEmail()) != null || this.findUserByUserPhone(user.getUserPhone()) != null) {
             throw new SimilarDataAlreadyExistsException("Email or Phone already Exist");
         }
         user.setUserPassword(this.passwordEncoder.encode(user.getUserPassword()));
@@ -51,12 +51,12 @@ public class UserService implements ServiceInterface<User>, UserDetailsService {
     public User update(Long id, User user) {
         User sameEmailUser = this.findUserByUserEmail(user.getUserEmail());
         User samePhoneUser = this.findUserByUserPhone(user.getUserPhone());
-        if(sameEmailUser!=null) {
+        if (sameEmailUser != null) {
             if (sameEmailUser.getUserId() == id) {
                 sameEmailUser = null;
             }
         }
-        if(samePhoneUser!=null) {
+        if (samePhoneUser != null) {
             if (samePhoneUser.getUserId() == id) {
                 samePhoneUser = null;
             }
